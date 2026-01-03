@@ -94,7 +94,7 @@ style = "bg:#3f3f3f"
 
 [kubernetes]
 style = "bg:#3f3f3f"
-format = '[[($namespace)](fg:#bbbbbb bg:#3f3f3f)]($style)'
+format = '[[($namespace) ](fg:#bbbbbb bg:#3f3f3f)]($style)'
 disabled = false
 
 [time]

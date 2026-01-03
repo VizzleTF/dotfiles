@@ -1,0 +1,82 @@
+version = 2
+
+[[tab]]
+id = "tab-3x4r"
+label = "VSCode + TG + Spotify"
+worksets = []
+include_unassigned = false
+
+[[workset]]
+id = "ws-1"
+name = "Kitty + Zen"
+desc = ""
+workspace = "1"
+commands = [
+    "kitty",
+    "zen-browser",
+]
+
+[workset.env]
+
+[workset.layout]
+type = "split"
+direction = "horizontal"
+ratio = 0.30000001192092896
+
+[workset.layout.left]
+type = "leaf"
+slot_id = 1
+command = "kitty"
+
+[workset.layout.left.env]
+
+[workset.layout.right]
+type = "leaf"
+slot_id = 2
+command = "zen-browser"
+
+[workset.layout.right.env]
+
+[[workset]]
+id = "ws-2"
+name = "TG + Spoty + VSCode"
+desc = ""
+workspace = "2"
+commands = [
+    "rm -rf ~/.config/VSCodium/*Cache* && vscodium --no-sandbox",
+    "Telegram",
+    "spotify",
+]
+
+[workset.env]
+
+[workset.layout]
+type = "split"
+direction = "horizontal"
+ratio = 1.3111110925674438
+
+[workset.layout.left]
+type = "leaf"
+slot_id = 1
+command = "rm -rf ~/.config/VSCodium/*Cache* && vscodium --no-sandbox"
+
+[workset.layout.left.env]
+
+[workset.layout.right]
+type = "split"
+direction = "vertical"
+ratio = 1.1538461446762085
+
+[workset.layout.right.left]
+type = "leaf"
+slot_id = 2
+command = "Telegram"
+
+[workset.layout.right.left.env]
+
+[workset.layout.right.right]
+type = "leaf"
+slot_id = 3
+command = "spotify"
+
+[workset.layout.right.right.env]

@@ -25,7 +25,6 @@ def get_player_icon(player_name):
         'chrome': '',
         'vlc': '󰕼',
         'mpv': '',
-        'cmus': '',
         'rhythmbox': '󰓃',
         'clementine': '󰓃',
         'strawberry': '󰓃',

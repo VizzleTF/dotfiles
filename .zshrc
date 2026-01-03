@@ -12,7 +12,7 @@ typeset -U PATH path
 # HISTORY CONFIGURATION
 # =============================================================================
 export HISTFILE=~/.zsh_history
-export HISTSIZE=50000
+export HISTSIZE=100000
 export SAVEHIST=$HISTSIZE
 export HIST_IGNORE="(&|ls|q|t|c|exit|history|clear|)"
 
@@ -52,7 +52,10 @@ bindkey '^[[F' end-of-line            # End - в конец строки
 bindkey '^[[1~' beginning-of-line     # Home (альтернатива)
 bindkey '^[[4~' end-of-line           # End (альтернатива)
 bindkey '\e[1;3D' backward-word       # Alt+Left - назад по словам
-bindkey '\e[1;3C' forward-word        # Alt+Right - вперед по словам
+bindkey '\e[1;3C' forward-word        # Alt+Right - вперёд по словам
+bindkey '^[[1;5D' backward-word       # Ctrl+Left - назад по словам
+bindkey '^[[1;5C' forward-word        # Ctrl+Right - вперёд по словам
+bindkey '^H' backward-kill-word       # Ctrl+Backspace - удалить слово назад
 
 # =============================================================================
 # COMPLETION SYSTEM
@@ -274,4 +277,3 @@ if command -v vault > /dev/null 2>&1; then
   autoload -U +X bashcompinit && bashcompinit
   complete -o nospace -C "$(which vault)" vault
 fi
-alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
