@@ -47,6 +47,10 @@ setopt ALWAYS_TO_END            # После дополнения — курсо
 
 bindkey '^A' beginning-of-line        # Ctrl+A - в начало строки
 bindkey '^E' end-of-line              # Ctrl+E - в конец строки
+bindkey '^[[H' beginning-of-line      # Home - в начало строки
+bindkey '^[[F' end-of-line            # End - в конец строки
+bindkey '^[[1~' beginning-of-line     # Home (альтернатива)
+bindkey '^[[4~' end-of-line           # End (альтернатива)
 bindkey '\e[1;3D' backward-word       # Alt+Left - назад по словам
 bindkey '\e[1;3C' forward-word        # Alt+Right - вперед по словам
 

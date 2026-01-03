@@ -12,7 +12,7 @@ $git_status\
 -\
 [](fg:#3f3f3f)\
 $custom$kubernetes\
-[](fg:#3f3f3f bg:#353535)\
+[](fg:#3f3f3f)\
 -$time\
 \n$character
 """
@@ -101,7 +101,7 @@ disabled = false
 disabled = false
 time_format = "%R"
 style = "bg:#00000000"
-format = '[[ $time](fg:#999999)]($style)'
+format = '[[ $time](fg:#999999)]($style)'
 
 [cmd_duration]
 min_time = 2000
