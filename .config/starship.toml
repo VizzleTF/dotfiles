@@ -1,0 +1,117 @@
+format = """
+$os\
+[](fg:#5e5e5e)\
+$username\
+$hostname\
+[](fg:#5e5e5e bg:#555555)\
+$directory\
+[](fg:#555555 bg:#4a4a4a)\
+$git_branch\
+$git_status\
+[](fg:#4a4a4a)\
+-\
+[](fg:#3f3f3f)\
+$custom$kubernetes\
+[](fg:#3f3f3f bg:#353535)\
+-$time\
+\n$character
+"""
+
+[os]
+disabled = false
+style = "fg:#ffffff"
+
+[os.symbols]
+Windows = "󰍲 "
+Ubuntu = "󰕈 "
+SUSE = " "
+Raspbian = "󰐿 "
+Mint = "󰣭 "
+Macos = "󰀵 "
+Manjaro = " "
+Linux = "󰌽 "
+Gentoo = "󰣨 "
+Fedora = "󰣛 "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = "󰣇 "
+Artix = "󰣇 "
+CachyOS = "󰣇 "
+EndeavourOS = " "
+CentOS = " "
+Debian = "󰣚 "
+Redhat = "󱄛 "
+RedHatEnterprise = "󱄛 "
+
+[username]
+show_always = true
+style_user = "fg:#eeeeee bg:#5e5e5e"
+style_root = "fg:#FFD700 bg:#5e5e5e"
+format = '[$user ]($style)'
+disabled = false
+
+[hostname]
+ssh_only = false
+style = "fg:#eeeeee bg:#5e5e5e"
+format = '[$hostname]($style)'
+disabled = false
+
+[directory]
+style = "fg:#dddddd bg:#555555"
+format = "[ $path]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = ""
+style = "bg:#4a4a4a"
+format = '[[ $symbol $branch ](fg:#cccccc bg:#4a4a4a)]($style)'
+
+[git_status]
+style = "bg:#4a4a4a"
+format = '[[($all_status$ahead_behind)](fg:#cccccc bg:#4a4a4a)]($style)'
+
+[git_metrics]
+disabled = false
+added_style = "bold green bg:#4a4a4a"
+deleted_style = "bold red bg:#4a4a4a"
+format = '([+$added]($added_style))([-$deleted]($deleted_style))'
+
+[custom.kubeconfig]
+command = """
+case "$KUBECONFIG" in
+  *"/home/ivan/.kube/config") echo "HOME" ;;
+  *"ams-web-capsule.config"*) echo "ams-web";;
+  *"ams-svc-capsule.config"*) echo "ams-svc";;
+  *"lux-capsule.config"*) echo "lux";;
+  *) echo "$(echo $KUBECONFIG | tr '[:lower:]' '[:upper:]')" ;;
+esac
+"""
+when = "test -n \"$KUBECONFIG\""
+format = '[[󱃾 $output:](fg:#bbbbbb bg:#3f3f3f)]($style)'
+style = "bg:#3f3f3f"
+
+[kubernetes]
+style = "bg:#3f3f3f"
+format = '[[($namespace)](fg:#bbbbbb bg:#3f3f3f)]($style)'
+disabled = false
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:#00000000"
+format = '[[ $time](fg:#999999)]($style)'
+
+[cmd_duration]
+min_time = 2000
+format = "took [$duration](yellow) "
+
+[status]
+disabled = false
+format = '[$status]($style) '
+style = "red"
+
+[character]
+success_symbol = "[❯](bold #7aa2f7)"
+error_symbol = "[❯](bold #ff5f87)"

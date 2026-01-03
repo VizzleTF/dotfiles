@@ -1,0 +1,19 @@
+background-color=#1e1e2eDD
+text-color=#cdd6f4
+border-color=#89b4fa
+border-size=2
+border-radius=15
+font=JetBrainsMono Nerd Font 12
+padding=15
+margin=10
+layer=overlay
+group-by=app-name
+max-visible=5
+default-timeout=5000
+actions=true
+on-button-right=dismiss-all
+
+[urgency=critical]
+background-color=#f38ba8DD
+border-color=#f38ba8
+default-timeout=0

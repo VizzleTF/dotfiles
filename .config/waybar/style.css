@@ -1,0 +1,134 @@
+* {
+	font-family: JetBrainsMono, "Symbols Nerd Font";
+	font-weight: bold;
+	font-size: 16px;
+	min-height: 0;
+}
+
+@define-color bg #1e1e2e;
+@define-color bg2 #181825;
+@define-color fg #cdd6f4;
+@define-color pink #f5c2e7;
+@define-color green #a6e3a1;
+@define-color fl #f2cdcd;
+@define-color blue #89b4fa;
+@define-color red #eba0ac;
+@define-color vl #cba6f7;
+@define-color yellow #fab387;
+
+window#waybar {
+	border-radius: 20px;
+	background-color: @bg;
+}
+
+#custom-menu,
+#workspaces,
+#window,
+#custom-cmus,
+#custom-media,
+#custom-weather,
+#tray,
+#cpu,
+#memory,
+#network,
+#language,
+#pulseaudio,
+#clock,
+#custom-power {
+	padding: 2px 15px;
+	margin: 5px;
+	background-color: @bg2;
+	border: none;
+	border-radius: 20px;
+}
+
+#custom-menu {
+	margin-left: 10px;
+	color: @vl;
+}
+
+#custom-menu:hover {
+	color: @fl;
+}
+
+#window {
+	color: @yellow;
+}
+
+#custom-cmus,
+#custom-media,
+#custom-weather,
+#cpu,
+#memory,
+#network,
+#language,
+#pulseaudio,
+#clock {
+	color: @fg;
+}
+
+#custom-cmus:hover,
+#custom-media:hover,
+#custom-weather:hover,
+#cpu:hover,
+#memory:hover,
+#network:hover,
+#language:hover,
+#pulseaudio:hover,
+#clock:hover {
+	color: @yellow;
+}
+
+#network.disconnected {
+	color: @red;
+}
+
+#pulseaudio.muted {
+	color: @red;
+}
+
+#custom-power {
+	margin-right: 10px;
+	color: @pink;
+}
+
+#custom-power:hover {
+	color: @red;
+}
+
+button {
+	box-shadow: inset 0px -3px transparent;
+	border: none;
+	border-radius: 0px;
+}
+
+button:hover {
+	background: inherit;
+	box-shadow: inset 0px -3px transparent;
+}
+
+#workspaces button {
+	padding: 0 5px;
+	background-color: transparent;
+	color: @fg;
+}
+
+#workspaces button:hover {
+	color: @yellow;
+}
+
+#workspaces button.focused {
+	background-color: transparent;
+}
+
+#workspaces button.urgent {
+	background-color: transparent;
+}
+
+tooltip {
+	background: @bg;
+	margin: 20px;
+	padding: 15px;
+	border: 20px solid rgba(100, 114, 125, 0);
+	border-radius: 10px;
+}

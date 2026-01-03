@@ -1,0 +1,273 @@
+# =============================================================================
+# ZSH CONFIGURATION
+# =============================================================================
+
+# Environment Variables
+export EDITOR=nano
+export KUBE_EDITOR=nano
+export LANG=en_US.UTF-8
+typeset -U PATH path
+
+# =============================================================================
+# HISTORY CONFIGURATION
+# =============================================================================
+export HISTFILE=~/.zsh_history
+export HISTSIZE=50000
+export SAVEHIST=$HISTSIZE
+export HIST_IGNORE="(&|ls|q|t|c|exit|history|clear|)"
+
+# History options
+setopt EXTENDED_HISTORY          # записывать время выполнения команд
+setopt HIST_EXPIRE_DUPS_FIRST    # удалять дубликаты в первую очередь
+setopt HIST_IGNORE_DUPS          # не записывать последовательные дубликаты
+setopt HIST_IGNORE_ALL_DUPS      # удалять старые дубликаты при добавлении новых
+setopt HIST_FIND_NO_DUPS         # не показывать дубликаты при поиске
+setopt HIST_IGNORE_SPACE         # не записывать команды, начинающиеся с пробела
+setopt HIST_SAVE_NO_DUPS         # не сохранять дубликаты
+setopt HIST_REDUCE_BLANKS        # убирать лишние пробелы
+setopt SHARE_HISTORY             # делиться историей между сессиями
+setopt APPEND_HISTORY            # добавлять историю, а не перезаписывать
+setopt INC_APPEND_HISTORY        # писать сразу, а не при выходе
+setopt NOTIFY                    # уведомлять о завершении фоновых задач
+
+# =============================================================================
+# ZSH OPTIONS
+# =============================================================================
+setopt AUTO_CD                  # автопереход в директорию при вводе пути
+# setopt CORRECT                  # исправление опечаток в командах
+setopt GLOBDOTS                 # включать скрытые файлы в glob patterns
+setopt EXTENDED_GLOB            # расширенные glob patterns
+setopt NO_CASE_GLOB             # игнорировать регистр в glob patterns
+setopt COMPLETE_IN_WORD         # Дополнение внутри слова
+setopt ALWAYS_TO_END            # После дополнения — курсор в конец слова
+
+# =============================================================================
+# ZSH KEYBINDINGS
+# =============================================================================
+
+bindkey '^A' beginning-of-line        # Ctrl+A - в начало строки
+bindkey '^E' end-of-line              # Ctrl+E - в конец строки
+bindkey '\e[1;3D' backward-word       # Alt+Left - назад по словам
+bindkey '\e[1;3C' forward-word        # Alt+Right - вперед по словам
+
+# =============================================================================
+# COMPLETION SYSTEM
+# =============================================================================
+if [[ -o interactive ]]; then
+  autoload -U bashcompinit && bashcompinit
+  autoload -Uz compinit
+  zmodload zsh/complist
+  mkdir -p ~/.zsh/cache
+
+  if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+      compinit
+  else
+      compinit -C
+  fi
+
+  # Настройки completion
+  zstyle ':completion:*' menu select
+  zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+  zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+  zstyle ':completion:*' rehash true
+  zstyle ':completion:*' accept-exact '*(N)'
+  zstyle ':completion:*' use-cache on
+  zstyle ':completion:*' cache-path ~/.zsh/cache
+
+  # =============================================================================
+  # KUBERNETES COMPLETIONS
+  # =============================================================================
+  if command -v kubectl > /dev/null 2>&1; then
+      source <(kubectl completion zsh)
+  fi
+
+  if command -v helm > /dev/null 2>&1; then
+      source <(helm completion zsh)
+  fi
+fi
+
+# =============================================================================
+# ALIASES
+# =============================================================================
+
+# System aliases
+alias ls='eza --icons --group-directories-first'
+alias ll='eza -la --icons --group-directories-first'
+alias la='eza -a --icons --group-directories-first'
+alias lt='eza --tree --level=2 --icons'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias grep='grep --color=auto'
+alias c='code .'
+alias t='trae .'
+alias o='xdg-open .'
+alias q='exit'
+alias kt='kubetail'
+alias kl='kubectl logs'
+alias klf='kubectl logs -f'
+
+alias tf='terraform'
+alias tfp='terraform plan'
+alias tfa='terraform apply'
+alias tfaa='terraform apply --auto-approve'
+
+# Kubernetes aliases
+if command -v kubectl > /dev/null 2>&1; then
+    # COMMON
+    alias k='kubectl'
+    alias kg='kubectl get'
+    alias kd='kubectl describe'
+    alias kdel='kubectl delete'
+    alias kaf='kubectl apply -f'
+    alias kex='kubectl exec'
+    alias kexi='kubectl exec -ti'
+    alias ktp='kubectl top pod'
+    alias ktn='kubectl top node'
+    
+    # GET
+    alias kgp='kubectl get pods -o wide'
+    alias kgsvc='kubectl get services'
+    alias kgsts='kubectl get statefulsets'
+    alias kgd='kubectl get deployments'
+    alias kgrs='kubectl get replicasets'
+    alias kgi='kubectl get ingress'
+    alias kgn='kubectl get nodes -o wide'
+    alias kgns='kubectl get namespaces'
+    alias kgpv='kubectl get pv'
+    alias kgpvc='kubectl get pvc'
+    alias kgcm='kubectl get configmaps'
+    alias kgsec='kubectl get secrets'
+    alias kgsa='kubectl get sa'
+    alias kgcert='kubectl get certificates'
+    alias kgj='kubectl get jobs'
+    alias kgcj='kubectl get cronjobs'
+    
+    # DESCRIBE
+    alias kdp='kubectl describe pods'
+    alias kdsvc='kubectl describe services'
+    alias kdsts='kubectl describe statefulsets'
+    alias kdd='kubectl describe deployments'
+    alias kdrs='kubectl describe replicasets'
+    alias kdi='kubectl describe ingress'
+    alias kdn='kubectl describe nodes'
+    alias kdpv='kubectl describe pv'
+    alias kdpvc='kubectl describe pvc'
+    alias kdcm='kubectl describe configmaps'
+    alias kdcert='kubectl describe certificates'
+    alias kdj='kubectl describe jobs'
+    alias kdcj='kubectl describe cronjobs'
+    
+    # EDIT
+    alias kecm='kubectl edit configmap'
+    alias kesec='kubectl edit secret'
+    alias ked='kubectl edit deployment'
+    alias kei='kubectl edit ingress'
+    alias kecert='kubectl edit certificates'
+    alias kepv='kubectl edit pv'
+    alias kepvc='kubectl edit pvc'
+    alias kesvc='kubectl edit service'
+    alias kests='kubectl edit statefulset'
+    alias keditj='kubectl edit job'
+    alias keditcj='kubectl edit cronjob'
+    
+    # DELETE
+    alias kdelp='kubectl delete pod'
+    alias kdelsvc='kubectl delete service'
+    alias kdeld='kubectl delete deployment'
+    alias kdelrs='kubectl delete replicasets'
+    alias kdeli='kubectl delete ingress'
+    alias kdelpv='kubectl delete pv'
+    alias kdelpvc='kubectl delete pvc'
+    alias kdelcm='kubectl delete configmaps'
+    alias kdelj='kubectl delete job'
+    alias kdelcj='kubectl delete cronjob'
+    alias kdelcert='kubectl delete certificates'
+    alias kdelsec='kubectl delete secrets'
+    alias kdelns='kubectl delete namespace'
+fi
+
+# KUBECONFIG setup
+[[ -f "$HOME/.kube/config" ]] && export KUBECONFIG="$HOME/.kube/config"
+
+# Context aliases
+[[ -f "$HOME/.kube/config" ]] && alias khome="export KUBECONFIG=$HOME/.kube/config"
+[[ -f "$HOME/.kube/config" ]] && alias kh="export KUBECONFIG=$HOME/.kube/config"
+[[ -f "$HOME/.kube/lux-capsule.config" ]] && alias klux="export KUBECONFIG=$HOME/.kube/lux-capsule.config"
+[[ -f "$HOME/.kube/ams-web-capsule.config" ]] && alias kams="export KUBECONFIG=$HOME/.kube/ams-web-capsule.config"
+
+# =============================================================================
+# PATH CONFIGURATION
+# =============================================================================
+
+# Функции для безопасного добавления в PATH
+path_append() { [[ ":$PATH:" != *":$1:"* ]] && export PATH="$PATH:$1"; }
+path_prepend() { [[ ":$PATH:" != *":$1:"* ]] && export PATH="$1:$PATH"; }
+
+# PATH additions
+export BUN_INSTALL="$HOME/.bun"
+[[ -d "$HOME/.local/bin" ]] && path_prepend "$HOME/.local/bin"
+[[ -d "$HOME/bin" ]] && path_prepend "$HOME/bin"
+[[ -d "$BUN_INSTALL/bin" ]] && path_prepend "$BUN_INSTALL/bin"
+[[ -d "${KREW_ROOT:-$HOME/.krew}/bin" ]] && path_append "${KREW_ROOT:-$HOME/.krew}/bin"
+
+# =============================================================================
+# EXTERNAL TOOLS CONFIGURATION
+# =============================================================================
+
+# Interactive shell configuration
+if [[ -o interactive ]]; then
+  # ZSH Autosuggestions
+  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#888888"
+  ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
+  ZSH_AUTOSUGGEST_USE_ASYNC=1
+  ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+  [[ -r /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
+    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+  # ZSH Syntax Highlighting (должен быть последним плагином)
+  [[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+  # ZSH History Substring Search (после syntax-highlighting)
+  [[ -r /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] && \
+    source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+
+  # Starship prompt
+  command -v starship > /dev/null 2>&1 && eval "$(starship init zsh)"
+
+  # FZF configuration
+  if command -v fzf > /dev/null 2>&1; then
+    source <(fzf --zsh)
+    export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border"
+    # Использовать fd если установлен
+    if command -v fd > /dev/null 2>&1; then
+      export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+    fi
+  fi
+
+  # Additional completions
+  [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
+
+  # Zoxide - smarter cd
+  command -v zoxide > /dev/null 2>&1 && eval "$(zoxide init zsh)"
+fi
+
+# =============================================================================
+# SENSITIVE CONFIGURATION
+# =============================================================================
+
+# SECRETS
+[[ -f ~/.zsh_secrets ]] && source ~/.zsh_secrets
+
+export VAULT_ADDR='https://vault.vaka.work'
+
+# Vault completion (если установлен)
+if command -v vault > /dev/null 2>&1; then
+  autoload -U +X bashcompinit && bashcompinit
+  complete -o nospace -C "$(which vault)" vault
+fi
+alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
