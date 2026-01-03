@@ -1,8 +1,19 @@
 # =============================================================================
-# ZSH CONFIGURATION
+# ZSH CONFIGURATION FOR POWERLEVEL10K
 # =============================================================================
+# CachyOS + Hyperland + Kitty + Zsh workflow
+# DevOps/Infrastructure focus: Kubernetes, Docker, Terraform, Git
 
-# Environment Variables
+# =============================================================================
+# INSTANT PROMPT (POWERLEVEL10K) — должен быть в начале
+# =============================================================================
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# =============================================================================
+# ENVIRONMENT VARIABLES
+# =============================================================================
 export EDITOR=nano
 export KUBE_EDITOR=nano
 export LANG=en_US.UTF-8
@@ -17,45 +28,43 @@ export SAVEHIST=$HISTSIZE
 export HIST_IGNORE="(&|ls|q|t|c|exit|history|clear|)"
 
 # History options
-setopt EXTENDED_HISTORY          # записывать время выполнения команд
-setopt HIST_EXPIRE_DUPS_FIRST    # удалять дубликаты в первую очередь
-setopt HIST_IGNORE_DUPS          # не записывать последовательные дубликаты
-setopt HIST_IGNORE_ALL_DUPS      # удалять старые дубликаты при добавлении новых
-setopt HIST_FIND_NO_DUPS         # не показывать дубликаты при поиске
-setopt HIST_IGNORE_SPACE         # не записывать команды, начинающиеся с пробела
-setopt HIST_SAVE_NO_DUPS         # не сохранять дубликаты
-setopt HIST_REDUCE_BLANKS        # убирать лишние пробелы
-setopt SHARE_HISTORY             # делиться историей между сессиями
-setopt APPEND_HISTORY            # добавлять историю, а не перезаписывать
-setopt INC_APPEND_HISTORY        # писать сразу, а не при выходе
-setopt NOTIFY                    # уведомлять о завершении фоновых задач
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt NOTIFY
 
 # =============================================================================
 # ZSH OPTIONS
 # =============================================================================
-setopt AUTO_CD                  # автопереход в директорию при вводе пути
-# setopt CORRECT                  # исправление опечаток в командах
-setopt GLOBDOTS                 # включать скрытые файлы в glob patterns
-setopt EXTENDED_GLOB            # расширенные glob patterns
-setopt NO_CASE_GLOB             # игнорировать регистр в glob patterns
-setopt COMPLETE_IN_WORD         # Дополнение внутри слова
-setopt ALWAYS_TO_END            # После дополнения — курсор в конец слова
+setopt AUTO_CD
+setopt GLOBDOTS
+setopt EXTENDED_GLOB
+setopt NO_CASE_GLOB
+setopt COMPLETE_IN_WORD
+setopt ALWAYS_TO_END
 
 # =============================================================================
 # ZSH KEYBINDINGS
 # =============================================================================
-
-bindkey '^A' beginning-of-line        # Ctrl+A - в начало строки
-bindkey '^E' end-of-line              # Ctrl+E - в конец строки
-bindkey '^[[H' beginning-of-line      # Home - в начало строки
-bindkey '^[[F' end-of-line            # End - в конец строки
-bindkey '^[[1~' beginning-of-line     # Home (альтернатива)
-bindkey '^[[4~' end-of-line           # End (альтернатива)
-bindkey '\e[1;3D' backward-word       # Alt+Left - назад по словам
-bindkey '\e[1;3C' forward-word        # Alt+Right - вперёд по словам
-bindkey '^[[1;5D' backward-word       # Ctrl+Left - назад по словам
-bindkey '^[[1;5C' forward-word        # Ctrl+Right - вперёд по словам
-bindkey '^H' backward-kill-word       # Ctrl+Backspace - удалить слово назад
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[4~' end-of-line
+bindkey '\e[1;3D' backward-word
+bindkey '\e[1;3C' forward-word
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+bindkey '^H' backward-kill-word
 
 # =============================================================================
 # COMPLETION SYSTEM
@@ -72,7 +81,6 @@ if [[ -o interactive ]]; then
       compinit -C
   fi
 
-  # Настройки completion
   zstyle ':completion:*' menu select
   zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
   zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
@@ -81,9 +89,7 @@ if [[ -o interactive ]]; then
   zstyle ':completion:*' use-cache on
   zstyle ':completion:*' cache-path ~/.zsh/cache
 
-  # =============================================================================
   # KUBERNETES COMPLETIONS
-  # =============================================================================
   if command -v kubectl > /dev/null 2>&1; then
       source <(kubectl completion zsh)
   fi
@@ -120,7 +126,6 @@ alias tfaa='terraform apply --auto-approve'
 
 # Kubernetes aliases
 if command -v kubectl > /dev/null 2>&1; then
-    # COMMON
     alias k='kubectl'
     alias kg='kubectl get'
     alias kd='kubectl describe'
@@ -206,11 +211,9 @@ fi
 # PATH CONFIGURATION
 # =============================================================================
 
-# Функции для безопасного добавления в PATH
 path_append() { [[ ":$PATH:" != *":$1:"* ]] && export PATH="$PATH:$1"; }
 path_prepend() { [[ ":$PATH:" != *":$1:"* ]] && export PATH="$1:$PATH"; }
 
-# PATH additions
 export BUN_INSTALL="$HOME/.bun"
 [[ -d "$HOME/.local/bin" ]] && path_prepend "$HOME/.local/bin"
 [[ -d "$HOME/bin" ]] && path_prepend "$HOME/bin"
@@ -221,7 +224,6 @@ export BUN_INSTALL="$HOME/.bun"
 # EXTERNAL TOOLS CONFIGURATION
 # =============================================================================
 
-# Interactive shell configuration
 if [[ -o interactive ]]; then
   # ZSH Autosuggestions
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#888888"
@@ -231,24 +233,20 @@ if [[ -o interactive ]]; then
   [[ -r /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
     source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-  # ZSH Syntax Highlighting (должен быть последним плагином)
+  # ZSH Syntax Highlighting
   [[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
     source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-  # ZSH History Substring Search (после syntax-highlighting)
+  # ZSH History Substring Search
   [[ -r /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] && \
     source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
 
-  # Starship prompt
-  command -v starship > /dev/null 2>&1 && eval "$(starship init zsh)"
-
   # FZF configuration
   if command -v fzf > /dev/null 2>&1; then
     source <(fzf --zsh)
     export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border"
-    # Использовать fd если установлен
     if command -v fd > /dev/null 2>&1; then
       export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -256,23 +254,32 @@ if [[ -o interactive ]]; then
     fi
   fi
 
-  # Additional completions
-  [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
-
   # Zoxide - smarter cd
   command -v zoxide > /dev/null 2>&1 && eval "$(zoxide init zsh)"
+
+  # Additional completions
+  [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 fi
+
+# =============================================================================
+# POWERLEVEL10K THEME — загружаем ПОСЛЕ всех плагинов
+# =============================================================================
+
+# Выберите нужное в зависимости от метода установки:
+[[ -r ~/powerlevel10k/powerlevel10k.zsh-theme ]] && \
+  source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+# Загрузить конфигурацию p10k
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # =============================================================================
 # SENSITIVE CONFIGURATION
 # =============================================================================
 
-# SECRETS
 [[ -f ~/.zsh_secrets ]] && source ~/.zsh_secrets
 
 export VAULT_ADDR='https://vault.vaka.work'
 
-# Vault completion (если установлен)
 if command -v vault > /dev/null 2>&1; then
   autoload -U +X bashcompinit && bashcompinit
   complete -o nospace -C "$(which vault)" vault
